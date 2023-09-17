@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>20 Circles with Images and Modal Box</title>
+    <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        margin: 0;
+      }
+      .large-circle {
+        width: 300px;
+        height: 300px;
+        background-color: #f0f0f0;
+        border-radius: 50%;
+        position: relative;
+        left: 45%;
+      }
+      .small-circle {
+        width: 130px;
+        height: 130px;
+        border-radius: 50%;
+        position: absolute;
+        top: 25%;
+        left: 25%;
+        transform: translate(-50%, -50%);
+        cursor: pointer;
+        overflow: hidden;
+      }
+      .small-circle img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+      }
+      .modal {
+        display: none;
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        z-index: 999;
+      }
+      .modal-content {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #fff;
+        padding: 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+      }
+      .modal img {
+        max-width: 100%;
+        max-height: 80vh;
+        display: flex;
+        flex-direction: column;
+      }
+      .bg {
+        position: relative;
+        z-index: -1;
+      }
+      #fname {
+        position: absolute;
+        z-index: 3;
+        top: 30vh;
+        margin-left: 30vw;
+        width: 45vw;
+        height: 2rem;
+      }
+      .label-image {
+        color: white;
+      }
+      .close-btn {
+        display: block;
+        height: 40px;
+        width: 40px;
+        margin-right: 0;
+      }
+      .modal-header {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+      }
+      .modalTitle {
+        width: 40%;
+        font-weight: bolder;
+        font-size: 45px;
+      }
+      .bouncingball {
+        width: 140px;
+        height: 140px;
+        border-radius: 100%;
+        /* background: #6ebc0e; */
+        animation: bounce 1s;
+        transform: translateY(0px);
+        animation-iteration-count: infinite;
+        position: absolute;
+        margin: 50px;
+        left: 5%;
+        background-color: #ffdee9;
+        background-image: linear-gradient(0deg, #ffdee9 0%, #b5fffc 100%);
+        text-align: center;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      @keyframes bounce {
+        0% {
+          top: 0;
+          -webkit-animation-timing-function: ease-in;
+        }
+        40% {
+        }
+        50% {
+          top: 140px;
+          height: 140px;
+          -webkit-animation-timing-function: ease-out;
+        }
+        55% {
+          top: 160px;
+          height: 120px;
+          -webkit-animation-timing-function: ease-in;
+        }
+        65% {
+          top: 120px;
+          height: 140px;
+          -webkit-animation-timing-function: ease-out;
+        }
+        95% {
+          top: 0;
+          -webkit-animation-timing-function: ease-in;
+        }
+        100% {
+          top: 0;
+          -webkit-animation-timing-function: ease-in;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="bouncingball"><h2>Yaar Jigri ❤️</h2></div>
+    <div class="large-circle parent" id="largeCircle"></div>
+
+    <canvas class="bg" id="canv"></canvas>
+    <div class="modal" id="modal">
+      <div class="modal-content">
+        <div class="modal-header">
+          <div id="modal-title" class="modalTitle"></div>
+          <span class="close-btn" onclick="closeModal()"
+            ><img id="close-btn-png" src="cross.png" alt="cross Image"
+          /></span>
+        </div>
+        <img id="modalImage" src="" alt="Modal Image" />
+      </div>
+    </div>
+
+    <script>
+      var c = document.getElementById("canv"),
+        $ = c.getContext("2d"),
+        w = (c.width = window.innerWidth),
+        h = (c.height = window.innerHeight),
+        t = 0,
+        num = 550,
+        u = 0,
+        s,
+        a,
+        b,
+        x,
+        y,
+        _x,
+        _y,
+        _t = 1 / 60;
+
+      var anim = function () {
+        $.globalCompositeOperation = "source-over";
+        window.requestAnimationFrame(anim);
+        $.fillStyle = "hsla(0, 0%, 0%, .35)";
+        $.fillRect(0, 0, w, h);
+        $.globalCompositeOperation = "lighter";
+        for (var i = 0; i < 1; i++) {
+          x = 0;
+          $.beginPath();
+          for (var j = 0; j < num; j++) {
+            x += 0.45 * Math.sin(11);
+            y = (x * Math.sin(i + 3.0 * t + x / 15)) / 15;
+            _x = x * Math.cos(b) + y * Math.sin(i);
+            _y = x * Math.sin(b) + y * Math.cos(i);
+            b = (j * 2.66 * Math.PI) / 4;
+            $.lineWidth = 0.04;
+            $.lineTo(w / 2 + _x, h / 2 + _y);
+          }
+          var g = $.createLinearGradient(
+            w / 2 + _x,
+            h / 2 + _y,
+            1,
+            w / 2 + _x,
+            h / 2 + _y
+          );
+          g.addColorStop(0.1, "hsla(" + u + ",95%,50%,1)");
+          g.addColorStop(0.5, "hsla(0,0%,10%,1)");
+          g.addColorStop(1, "hsla(0,0%,0%,1)");
+          $.strokeStyle = g;
+          $.stroke();
+        }
+        t += _t;
+        u -= 0.2;
+      };
+      anim();
+
+      window.addEventListener(
+        "resize",
+        function () {
+          c.width = w = window.innerWidth;
+          c.height = h = window.innerHeight;
+        },
+        false
+      );
+      function closeModal() {
+        document.getElementById("modal").style.display = "none";
+      }
+
+      function generateRandomColor() {
+        let maxVal = 0xffffff; // 16777215
+        let randomNumber = Math.random() * maxVal;
+        randomNumber = Math.floor(randomNumber);
+        randomNumber = randomNumber.toString(16);
+        let randColor = randomNumber.padStart(6, 0);
+        return `#${randColor.toUpperCase()}`;
+      }
+
+      function createCircles(n) {
+        const largeCircle = document.getElementById("largeCircle");
+        const radius = 110; // Set the radius of the larger circle here
+        const angleIncrement = (2 * Math.PI) / n;
+        const speed = 0.004; // Adjust the speed of rotation here
+        let currentAngle = 0;
+        let animationPaused = false;
+        const details = [
+          "Prajwal",
+          "Parth",
+          "Abhay",
+          "Ankit",
+          "Prashant",
+          "Utkarsh",
+        ];
+        const images = [
+          "a.jpeg",
+          "b.jpeg",
+          "c.jpeg",
+          "d.jpg",
+          "e.jpeg",
+          "f.jpeg",
+          // Add more image URLs here (up to 20 in this example)
+        ];
+
+        for (let i = 0; i < n; i++) {
+          const angle = i * angleIncrement;
+          const x = 2.2 * radius * Math.cos(angle);
+          const y = 2.2 * radius * Math.sin(angle);
+
+          const smallCircle = document.createElement("div");
+          smallCircle.className = "small-circle";
+          smallCircle.style.transform = `translate(${x}px, ${y}px)`;
+          smallCircle.style.backgroundColor = generateRandomColor();
+
+          // Set a unique image for each circle
+          const imageIndex = i % images.length;
+          const imageUrl = images[imageIndex];
+          const imageTitle = details[imageIndex];
+          const imageElement = document.createElement("img");
+          imageElement.src = imageUrl;
+          imageElement.alt = "Image " + (imageIndex + 1);
+          smallCircle.appendChild(imageElement);
+
+          smallCircle.addEventListener("mouseenter", () => {
+            animationPaused = true;
+          });
+
+          smallCircle.addEventListener("mouseleave", () => {
+            animationPaused = false;
+          });
+
+          // Show modal when clicking on a circle
+          smallCircle.addEventListener("click", () => {
+            document.getElementById("modalImage").src = imageUrl;
+            document.getElementById("modal-title").innerHTML = imageTitle;
+            document.getElementById("modal").style.display = "block";
+          });
+
+          largeCircle.appendChild(smallCircle);
+        }
+
+        function animateCircles() {
+          if (!animationPaused) {
+            currentAngle += speed;
+          }
+
+          for (let i = 0; i < n; i++) {
+            const circle = largeCircle.children[i];
+            const angle = i * angleIncrement + currentAngle;
+            const x = 2.2 * radius * Math.cos(angle);
+            const y = 2.2 * radius * Math.sin(angle);
+            circle.style.transform = `translate(${x}px, ${y}px)`;
+          }
+
+          requestAnimationFrame(animateCircles);
+        }
+
+        animateCircles();
+      }
+
+      const numberOfCircles = 6; // Set the value of 'n' (number of circles) here
+      createCircles(numberOfCircles);
+    </script>
+  </body>
+</html>
