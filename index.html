@@ -144,6 +144,69 @@
           -webkit-animation-timing-function: ease-in;
         }
       }
+      @media screen and (max-width: 719px) {
+        .large-circle {
+          width: 100px;
+          height: 100px;
+          left: 38%;
+        }
+        .small-circle {
+          width: 90px;
+          height: 90px;
+        }
+        .bouncingball {
+          width: 90px;
+          height: 90px;
+          border-radius: 100%;
+          /* background: #6ebc0e; */
+          animation: bounce 2s;
+          transform: translateY(0px);
+          animation-iteration-count: infinite;
+          position: absolute;
+          margin: 50px;
+          left: 25%;
+          background-color: #ffdee9;
+          background-image: linear-gradient(0deg, #ffdee9 0%, #b5fffc 100%);
+          text-align: center;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          font-size: 12px;
+          padding: 2px;
+        }
+
+        @keyframes bounce {
+          0% {
+            top: 0;
+            -webkit-animation-timing-function: ease-in;
+          }
+          40% {
+          }
+          50% {
+            top: 90px;
+            height: 40px;
+            -webkit-animation-timing-function: ease-out;
+          }
+          55% {
+            top: 110px;
+            height: 70px;
+            -webkit-animation-timing-function: ease-in;
+          }
+          65% {
+            top: 70px;
+            height: 40px;
+            -webkit-animation-timing-function: ease-out;
+          }
+          95% {
+            top: 0;
+            -webkit-animation-timing-function: ease-in;
+          }
+          100% {
+            top: 0;
+            -webkit-animation-timing-function: ease-in;
+          }
+        }
+      }
     </style>
   </head>
   <body>
@@ -238,8 +301,14 @@
       }
 
       function createCircles(n) {
+        const windowHeight = window.innerHeight;
+        const windowWidth = window.innerWidth;
         const largeCircle = document.getElementById("largeCircle");
-        const radius = 110; // Set the radius of the larger circle here
+        let radius = 110;
+        if (windowWidth < 720) {
+          radius = windowWidth / 7;
+        }
+        // const radius = 110; // Set the radius of the larger circle here
         const angleIncrement = (2 * Math.PI) / n;
         const speed = 0.004; // Adjust the speed of rotation here
         let currentAngle = 0;
